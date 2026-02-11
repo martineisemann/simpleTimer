@@ -1,16 +1,21 @@
+#include <chrono>
 #include <iostream>
 #include <thread>
 
 #include "Timer.h"
 
+void sleep() { std::this_thread::sleep_for(std::chrono::seconds(2)); }
+
 int main() {
     Timer t; // timer starts here
-    std::this_thread::sleep_for(std::chrono::seconds(2));
-    t.stop(); // stop timer
+    sleep();
 
-    std::cout << "Millisec.: " << t.elapsed_time_in_milliseconds() << "\n"
-              << "Seconds: " << t.elapsed_time_in_seconds() << "\n"
-              << "Minutes: " << t.elapsed_time_in_minutes() << "\n"
-              << "Hours: " << t.elapsed_time_in_hours() << "\n";
+    std::cout << "Millisec.: " << t.elapsed<std::chrono::milliseconds>() << "\n"
+              << "Seconds: " << t.elapsed<std::chrono::seconds>() << "\n"
+              << "Minutes: " << t.elapsed<std::chrono::minutes>() << "\n"
+              << "Hours: " << t.elapsed<std::chrono::hours>() << "\n";
+
+    std::cout << "Function took: " << Timer::timeFunction(sleep) << std::endl;
+
     return 0;
 }
